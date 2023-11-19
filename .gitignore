@@ -36,6 +36,7 @@ lerna-debug.log*
 
 # envirement files
 .env
+.env.development
 
 # database mapped volumes
 data
