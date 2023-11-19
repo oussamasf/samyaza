@@ -1,0 +1,40 @@
+version: '3.5'
+
+services:
+  #########################
+  mongo:
+    container_name: flixDB
+    image: mongo:6
+    restart: always
+    volumes:
+      - ${MONGO_DATA}:/data/db
+      - ${MONGO_DUMP}:/dump
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+    #   MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    ports:
+      - ${MONGO_PORT}:27017
+    networks:
+      - flex-network
+######################### only in prod: comment when dev
+# app:
+#   container_name: flix-flex-api
+#   build:
+#     context: .
+#     dockerfile: ./dockerfile
+#   restart: always
+#   env_file: .env
+#   expose:
+#     - ${PORT}
+#   ports:
+#     - ${PORT}:${PORT}
+#   links:
+#     - mongo
+#   depends_on:
+#     - mongo
+#   networks:
+#     - flex-network
+#########################
+networks:
+  flex-network:
+    driver: bridge
