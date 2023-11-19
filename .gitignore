@@ -33,3 +33,12 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# envirement files
+.env
+
+# database mapped volumes
+data
+
+# scripts 
+/bash
