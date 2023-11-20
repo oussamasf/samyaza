@@ -15,10 +15,12 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpLoggingMiddleware } from './middlewares/http-logging.middleware';
 import { CommonModule } from './common/common.module';
 import { CommonService } from './common/common.service';
+import { ClientModule } from './client/client.module';
 
 @Module({
   imports: [
     BackofficeModule,
+    ClientModule,
 
     ConfigModule.forRoot(configOptions),
     MongooseModule.forRoot(process.env.MONGO_URL),
