@@ -17,8 +17,8 @@ export class AccessTokenStrategy extends PassportStrategy(
     });
   }
 
-  async validate(payload: { email: string }) {
-    const user = await this.clientAuthService.getUserByEmail(payload.email);
+  async validate(payload: { username: string }) {
+    const user = await this.clientAuthService.getUserByName(payload.username);
     if (!user.refreshToken) throw new UnauthorizedException();
     return user;
   }

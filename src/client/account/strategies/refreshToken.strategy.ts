@@ -19,7 +19,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
     });
   }
 
-  async validate(req: Request, payload: { email: string }) {
+  async validate(req: Request, payload: { username: string }) {
     const refreshToken = req
       ?.get('authorization')
       ?.replace('Bearer', '')
@@ -27,7 +27,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
 
     if (!refreshToken) throw new UnauthorizedException();
 
-    const user = await this.clientAuthService.getUserByEmail(payload.email);
+    const user = await this.clientAuthService.getUserByName(payload.username);
     const isValid = await bcrypt.compare(refreshToken, `${user?.refreshToken}`);
     if (!isValid) throw new UnauthorizedException();
 
