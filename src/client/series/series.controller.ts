@@ -43,6 +43,16 @@ export class SeriesController {
   }
 
   /**
+   * Retrieve Top rated 5 series .
+   *
+   * @returns The series object[] if found.
+   */
+  @Get('top-rated')
+  async getTop() {
+    return await this.seriesService.getTopRated();
+  }
+
+  /**
    * Retrieve information about a single series by its unique identifier.
    *
    * @param id - The unique identifier of the series to be retrieved.

@@ -42,6 +42,11 @@ export class MovieController {
     return this.movieService.findAll(queryParams, search, sort);
   }
 
+  @Get('top-rated')
+  async getTop() {
+    return await this.movieService.getTopRated();
+  }
+
   /**
    * Retrieve information about a single movie by its unique identifier.
    *
@@ -52,4 +57,11 @@ export class MovieController {
   async findMovie(@Param() { id }: IdParamsDto) {
     return await this.movieService.findOne(`${id}`);
   }
+
+  /**
+   * Retrieve information about a single movie by its unique identifier.
+   *
+   * @param id - The unique identifier of the movie to be retrieved.
+   * @returns The movie object if found.
+   */
 }

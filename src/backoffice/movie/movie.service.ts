@@ -117,7 +117,7 @@ export class MovieService {
   /**
    * Updates an movie information entry with the specified changes based on its unique id (idNumber).
    *
-   * @param {string} idNumber - The unique id of the movie information entry to update.
+   * @param {string} id - The unique id of the movie information entry to update.
    * @param {UpdateMovieDto} updateMovieDto - The data containing the changes to apply to the movie information entry.
    * @throws {DuplicatedMongoException} If the proposed changes result in a duplicate movie name.
    * @returns {Promise<Movie>} A Promise that resolves when the movie information entry is successfully updated.
@@ -127,5 +127,14 @@ export class MovieService {
       () => this.movieRepository.updateById(id, updateMovieDto),
       movieErrorMessages.MOVIE_TITLE_ALREADY_EXISTS,
     );
+  }
+
+  /**
+   * Retrieves top 5 rated movies
+   * @returns {Promise<Movie | null>} A Promise that resolves to the found movie information entry,
+   * or undefined if no movie with the specified name exists.
+   */
+  async getTopRated(): Promise<Movie[]> {
+    return await this.movieRepository.getTopRated();
   }
 }
