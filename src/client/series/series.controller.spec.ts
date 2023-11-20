@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SeriesController } from './series.controller';
 import { SeriesService } from './series.service';
 
-describe('TripController', () => {
+describe('SeriesController', () => {
   let controller: SeriesController;
 
   beforeEach(async () => {

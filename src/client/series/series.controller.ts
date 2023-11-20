@@ -62,4 +62,15 @@ export class SeriesController {
   async findSeries(@Param() { id }: IdParamsDto) {
     return await this.seriesService.findOne(`${id}`);
   }
+
+  /**
+   * Retrieve information about a single movie by its unique identifier.
+   *
+   * @param id - The unique identifier of the movie to be retrieved.
+   * @returns The movie object if found.
+   */
+  @Get(':id/trailer')
+  async findTrailer(@Param() { id }: IdParamsDto) {
+    return await this.seriesService.getTrailer(id);
+  }
 }
