@@ -10,30 +10,29 @@ import { FindAllReturn } from '../../../common/types/findAll.types';
 @Injectable()
 export class MovieRepository {
   constructor(
-    @InjectModel(Movie.name) private genreModel: Model<MovieDocument>,
+    @InjectModel(Movie.name) private EntityModel: Model<MovieDocument>,
   ) {}
 
   async findOne(userFilterQuery: FilterQuery<Movie>): Promise<Movie> {
-    return this.genreModel.findOne(userFilterQuery);
+    return this.EntityModel.findOne(userFilterQuery);
   }
 
   async find(usersFilterQuery: FindAllDto): Promise<FindAllReturn<Movie>> {
     usersFilterQuery.sort ? usersFilterQuery.sort : { _idNumber: 1 };
     const [results, count] = await Promise.all([
-      this.genreModel
-        .find(usersFilterQuery.search)
+      this.EntityModel.find(usersFilterQuery.search)
         .limit(usersFilterQuery.limit)
         .skip(usersFilterQuery.skip)
         .sort(usersFilterQuery.sort)
         .select('-password'),
 
-      this.genreModel.countDocuments(usersFilterQuery.search),
+      this.EntityModel.countDocuments(usersFilterQuery.search),
     ]);
     return { results, count };
   }
 
   async create(genre: CreateMovieDto): Promise<Movie> {
-    const newUser = new this.genreModel(genre);
+    const newUser = new this.EntityModel(genre);
     return newUser.save();
   }
 
@@ -41,7 +40,7 @@ export class MovieRepository {
     _id: string,
     updateMovieDto: UpdateMovieDto,
   ): Promise<Movie> {
-    const updatedItem = await this.genreModel.findOneAndUpdate(
+    const updatedItem = await this.EntityModel.findOneAndUpdate(
       { _id },
       updateMovieDto,
       { new: true },
@@ -54,13 +53,13 @@ export class MovieRepository {
     userFilterQuery: FilterQuery<Movie>,
     updateQuery: UpdateQuery<Movie>,
   ): Promise<Movie> {
-    return this.genreModel.findOneAndUpdate(userFilterQuery, updateQuery, {
+    return this.EntityModel.findOneAndUpdate(userFilterQuery, updateQuery, {
       new: true,
     });
   }
 
   async createMultiple(genres: CreateMovieDto[]): Promise<Movie[]> {
-    const newUsers = await this.genreModel.insertMany(genres);
+    const newUsers = await this.EntityModel.insertMany(genres);
     return newUsers;
   }
 }
