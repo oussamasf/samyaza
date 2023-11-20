@@ -55,4 +55,9 @@ export class GenreRepository {
       new: true,
     });
   }
+
+  async createMultiple(genres: CreateGenreDto[]): Promise<Genre[]> {
+    const newUsers = await this.genreModel.insertMany(genres);
+    return newUsers;
+  }
 }

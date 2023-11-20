@@ -30,6 +30,7 @@ import { QueryParamsDto } from '../../common/dto';
 
 // Constants
 import AUTH_GUARD from '../../common/constants/authGuards';
+import { genresSeeds } from './seeds';
 // TODO swagger
 @Controller()
 @UseGuards(AuthGuard(AUTH_GUARD.ACCESS_TOKEN_BACKOFFICE))
@@ -39,6 +40,11 @@ export class GenreController {
   @Post()
   create(@Body() createGenreDto: CreateGenreDto) {
     return this.genreService.create(createGenreDto);
+  }
+
+  @Post('/seed')
+  createMultiple() {
+    return this.genreService.createMultiple(genresSeeds);
   }
 
   @Get()

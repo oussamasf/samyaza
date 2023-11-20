@@ -43,6 +43,10 @@ export class GenreService {
     return await this.genreRepository.create(createGenreDto);
   }
 
+  async createMultiple(createGenreDto: CreateGenreDto[]): Promise<Genre[]> {
+    return await this.genreRepository.createMultiple(createGenreDto);
+  }
+
   /**
    * Retrieves a list of genre information entries based on specified query parameters.
    *
