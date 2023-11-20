@@ -11,7 +11,7 @@ export type ClientDocument = HydratedDocument<Client>;
   },
 })
 export class Client {
-  @Prop()
+  @Prop({ required: true, unique: true })
   username: string;
 
   @Prop()
@@ -26,7 +26,7 @@ export class Client {
   @Prop()
   password: string;
 
-  @Prop()
+  @Prop({ required: true, unique: true })
   email: string;
 
   @Prop()

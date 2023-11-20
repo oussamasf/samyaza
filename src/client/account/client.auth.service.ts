@@ -55,8 +55,8 @@ export class ClientAuthService {
    * @param {string} email - The email of the client to find.
    * @returns {Promise<Client>} A promise that resolves to the found client.
    */
-  async getUserByEmail(email: string) {
-    return await this.clientRepository.findOne({ email });
+  async getUserByName(username: string) {
+    return await this.clientRepository.findOne({ username });
   }
 
   /**
@@ -69,9 +69,10 @@ export class ClientAuthService {
     const { email } = payload;
 
     await this.commonService.findWithConflictException(
-      () => this.getUserByEmail(email),
+      () => this.getUserByName(email),
       globalErrorMessages.EMAIL_ALREADY_EXISTS,
     );
+
     const { username } = await this.clientRepository.create({
       ...payload,
     });
@@ -91,10 +92,10 @@ export class ClientAuthService {
    * @returns {Promise<LoginRes<Client>>} A promise that resolves to the login response including tokens and user information.
    */
   async login(loginDto: LoginDto): Promise<LoginRes<Client>> {
-    const { email, password } = loginDto;
+    const { username, password } = loginDto;
 
     const user = await this.commonService.findWithNotFoundException(
-      () => this.getUserByEmail(email),
+      () => this.getUserByName(username),
       globalErrorMessages.USER_NOT_FOUND,
     );
 
@@ -104,10 +105,10 @@ export class ClientAuthService {
       globalErrorMessages.INVALID_PASSWORD,
     );
     const [access_token, refresh_token] = await Promise.all([
-      this.getAccessToken(email, user.username),
-      this.getRefreshToken(email, user.username),
+      this.getAccessToken(user.email, user.username),
+      this.getRefreshToken(user.email, user.username),
     ]);
-    await this.updateRefreshTokenHash(email, refresh_token);
+    await this.updateRefreshTokenHash(user.email, refresh_token);
 
     user.password = undefined;
     user.refreshToken = undefined;
