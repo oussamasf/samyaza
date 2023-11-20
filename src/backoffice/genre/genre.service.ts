@@ -37,7 +37,7 @@ export class GenreService {
 
     await this.commonService.findWithConflictException(
       () => this.findGenreByName(name),
-      genreErrorMessages.AGENCY_NAME_ALREADY_EXISTS,
+      genreErrorMessages.GENRE_NAME_ALREADY_EXISTS,
     );
 
     return await this.genreRepository.create(createGenreDto);
@@ -88,7 +88,7 @@ export class GenreService {
   async findOneWithException(_id: string): Promise<Genre | void> {
     return await this.commonService.findWithNotFoundException(
       () => this.findOne(_id),
-      genreErrorMessages.AGENCY_NOT_FOUND,
+      genreErrorMessages.GENRE_NOT_FOUND,
     );
   }
 
@@ -125,7 +125,7 @@ export class GenreService {
   async update(id: string, updateGenreDto: UpdateGenreDto): Promise<Genre> {
     return await this.commonService.duplicatedMongo(
       () => this.genreRepository.updateById(id, updateGenreDto),
-      genreErrorMessages.AGENCY_NAME_ALREADY_EXISTS,
+      genreErrorMessages.GENRE_NAME_ALREADY_EXISTS,
     );
   }
 }
