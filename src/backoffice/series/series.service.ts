@@ -128,4 +128,13 @@ export class SeriesService {
       seriesErrorMessages.SERIES_NAME_ALREADY_EXISTS,
     );
   }
+
+  /**
+   * Retrieves top 5 rated movies
+   * @returns {Promise<Movie | null>} A Promise that resolves to the found movie information entry,
+   * or undefined if no movie with the specified name exists.
+   */
+  async getTopRated(): Promise<Series[]> {
+    return await this.seriesRepository.getTopRated();
+  }
 }

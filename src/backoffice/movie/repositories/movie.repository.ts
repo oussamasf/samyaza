@@ -18,7 +18,7 @@ export class MovieRepository {
   }
 
   async find(usersFilterQuery: FindAllDto): Promise<FindAllReturn<Movie>> {
-    usersFilterQuery.sort ? usersFilterQuery.sort : { _idNumber: 1 };
+    usersFilterQuery.sort ? usersFilterQuery.sort : { _id: 1 };
     const [results, count] = await Promise.all([
       this.EntityModel.find(usersFilterQuery.search)
         .limit(usersFilterQuery.limit)
@@ -61,5 +61,12 @@ export class MovieRepository {
   async createMultiple(genres: CreateMovieDto[]): Promise<Movie[]> {
     const newUsers = await this.EntityModel.insertMany(genres);
     return newUsers;
+  }
+
+  async getTopRated(): Promise<Movie[]> {
+    return await this.EntityModel.find()
+      .limit(5)
+      .skip(0)
+      .sort({ voteAverage: -1 });
   }
 }

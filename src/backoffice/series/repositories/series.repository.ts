@@ -10,30 +10,29 @@ import { FindAllReturn } from '../../../common/types/findAll.types';
 @Injectable()
 export class SeriesRepository {
   constructor(
-    @InjectModel(Series.name) private seriesModel: Model<SeriesDocument>,
+    @InjectModel(Series.name) private EntityModel: Model<SeriesDocument>,
   ) {}
 
   async findOne(userFilterQuery: FilterQuery<Series>): Promise<Series> {
-    return this.seriesModel.findOne(userFilterQuery);
+    return this.EntityModel.findOne(userFilterQuery);
   }
 
   async find(usersFilterQuery: FindAllDto): Promise<FindAllReturn<Series>> {
     usersFilterQuery.sort ? usersFilterQuery.sort : { _idNumber: 1 };
     const [results, count] = await Promise.all([
-      this.seriesModel
-        .find(usersFilterQuery.search)
+      this.EntityModel.find(usersFilterQuery.search)
         .limit(usersFilterQuery.limit)
         .skip(usersFilterQuery.skip)
         .sort(usersFilterQuery.sort)
         .select('-password'),
 
-      this.seriesModel.countDocuments(usersFilterQuery.search),
+      this.EntityModel.countDocuments(usersFilterQuery.search),
     ]);
     return { results, count };
   }
 
   async create(genre: CreateSeriesDto): Promise<Series> {
-    const newUser = new this.seriesModel(genre);
+    const newUser = new this.EntityModel(genre);
     return newUser.save();
   }
 
@@ -41,7 +40,7 @@ export class SeriesRepository {
     _id: string,
     updateSeriesDto: UpdateSeriesDto,
   ): Promise<Series> {
-    const updatedItem = await this.seriesModel.findOneAndUpdate(
+    const updatedItem = await this.EntityModel.findOneAndUpdate(
       { _id },
       updateSeriesDto,
       { new: true },
@@ -54,13 +53,20 @@ export class SeriesRepository {
     userFilterQuery: FilterQuery<Series>,
     updateQuery: UpdateQuery<Series>,
   ): Promise<Series> {
-    return this.seriesModel.findOneAndUpdate(userFilterQuery, updateQuery, {
+    return this.EntityModel.findOneAndUpdate(userFilterQuery, updateQuery, {
       new: true,
     });
   }
 
   async createMultiple(genres: CreateSeriesDto[]): Promise<Series[]> {
-    const newUsers = await this.seriesModel.insertMany(genres);
+    const newUsers = await this.EntityModel.insertMany(genres);
     return newUsers;
+  }
+
+  async getTopRated(): Promise<Series[]> {
+    return await this.EntityModel.find()
+      .limit(5)
+      .skip(0)
+      .sort({ voteAverage: -1 });
   }
 }

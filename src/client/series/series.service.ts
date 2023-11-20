@@ -40,4 +40,13 @@ export class SeriesService {
   async findOne(_id: string) {
     return await this.backofficeSeriesService.findOneWithException(_id);
   }
+
+  /**
+   * Retrieves top 5 rated movies
+   * @returns {Promise<Movie | null>} A Promise that resolves to the found movie information entry,
+   * or undefined if no movie with the specified name exists.
+   */
+  async getTopRated() {
+    return await this.backofficeSeriesService.getTopRated();
+  }
 }
