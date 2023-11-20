@@ -64,4 +64,8 @@ export class MovieController {
    * @param id - The unique identifier of the movie to be retrieved.
    * @returns The movie object if found.
    */
+  @Get(':id/trailer')
+  async findTrailer(@Param() { id }: IdParamsDto) {
+    return await this.movieService.getTrailer(id);
+  }
 }

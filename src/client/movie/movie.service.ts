@@ -8,11 +8,13 @@ import {
 } from '../../backoffice/movie/dto';
 import { FindAllReturn } from '../../common/types';
 import { Movie } from '../../backoffice/movie/schemas/movie.schema';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class MovieService {
   constructor(
     private readonly backofficeMovieService: BackofficeMovieService,
+    private readonly httpService: HttpService,
   ) {}
 
   /**
@@ -48,5 +50,26 @@ export class MovieService {
    */
   async getTopRated() {
     return await this.backofficeMovieService.getTopRated();
+  }
+
+  async getTrailer(_id: string): Promise<Record<any, any>> {
+    const movie = (await this.backofficeMovieService.findOneWithException(
+      _id,
+    )) as Movie;
+
+    const url = `https://api.themoviedb.org/3/movie/${movie.idNumber}/videos`;
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer ${process.env.TMDB_JWT}`,
+      },
+    };
+
+    const {
+      data: { results },
+    } = await this.httpService.axiosRef.get(url, options);
+    const items = results.filter((el) => el.type === 'Trailer');
+    return items;
   }
 }

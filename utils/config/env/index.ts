@@ -9,6 +9,7 @@ const configOptions = {
     MONGO_PORT: Joi.number().required(),
     MONGO_DATA: Joi.string().required(),
     MONGO_DUMP: Joi.string().required(),
+    TMDB_JWT: Joi.string().required(),
   }),
   validationOptions: {
     allowUnknown: true,
