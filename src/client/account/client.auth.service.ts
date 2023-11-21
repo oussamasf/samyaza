@@ -73,9 +73,13 @@ export class ClientAuthService {
       globalErrorMessages.EMAIL_ALREADY_EXISTS,
     );
 
-    const { username } = await this.clientRepository.create({
-      ...payload,
-    });
+    const { username } = await this.commonService.duplicatedMongo(
+      () =>
+        this.clientRepository.create({
+          ...payload,
+        }),
+      'WRONG_CREDENTIALS:PLEASE_INSERT_ANOTHER_EMAIL/USERNAME',
+    );
 
     const [access_token, refresh_token] = await Promise.all([
       this.getAccessToken(email, username),

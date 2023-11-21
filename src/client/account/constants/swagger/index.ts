@@ -1,15 +1,14 @@
 export const loginSchema = {
   type: 'object',
   properties: {
-    email: {
+    username: {
       type: 'string',
-      format: 'email',
-      example: 'user@example.com',
+      example: 'itadori',
     },
     password: {
       type: 'string',
       format: 'password',
-      example: 'mysecretpassword',
+      example: 'yojiyojinotsukuna',
     },
   },
   required: ['email', 'password'],
@@ -26,7 +25,7 @@ export const signupSchema = {
     email: {
       type: 'string',
       format: 'email',
-      example: 'user@example.com',
+      example: 'ousf@medea.com',
     },
     password: {
       type: 'string',

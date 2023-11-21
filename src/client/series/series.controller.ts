@@ -11,12 +11,14 @@ import {
 } from '../../common/decorators/query.param.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import AUTH_GUARD from '../../common/constants/authGuards';
+import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 /**
  * Controller responsible for handling HTTP requests related to series.
  */
 @Controller()
 @UseGuards(AuthGuard(AUTH_GUARD.ACCESS_TOKEN_CLIENT))
+@ApiTags('Client/series')
 export class SeriesController {
   /**
    * Constructor for the SeriesController class.
@@ -34,6 +36,13 @@ export class SeriesController {
    * @returns A list of series matching the specified criteria.
    */
   @Get()
+  @ApiQuery({ name: 'queryParams', type: QueryParamsDto })
+  @ApiQuery({ name: 'search', type: SearchQuerySeriesDto })
+  @ApiQuery({ name: 'sort', type: SortQuerySeriesDto })
+  @ApiResponse({
+    status: 200,
+    description: 'List of series retrieved successfully',
+  })
   findAll(
     @Query() queryParams: QueryParamsDto,
     @SearchQuery() search: SearchQuerySeriesDto,
@@ -61,5 +70,16 @@ export class SeriesController {
   @Get(':id')
   async findSeries(@Param() { id }: IdParamsDto) {
     return await this.seriesService.findOne(`${id}`);
+  }
+
+  /**
+   * Retrieve information about a single movie by its unique identifier.
+   *
+   * @param id - The unique identifier of the movie to be retrieved.
+   * @returns The movie object if found.
+   */
+  @Get(':id/trailer')
+  async findTrailer(@Param() { id }: IdParamsDto) {
+    return await this.seriesService.getTrailer(id);
   }
 }

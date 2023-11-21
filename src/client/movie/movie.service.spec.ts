@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MovieService } from './movie.service';
 
-describe('TripService', () => {
+describe('MovieService', () => {
   let service: MovieService;
 
   beforeEach(async () => {

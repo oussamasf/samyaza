@@ -15,7 +15,7 @@ import { Request } from 'express';
 import { BackofficeService } from './backoffice.service';
 
 // Schemas
-import { loginSchema } from './constants/swagger';
+import { addAdmin, loginSchema } from './constants/swagger';
 
 // DTOS
 import { CreateBackofficeDto } from '../dto';
@@ -66,6 +66,7 @@ export class BackofficeAuthController {
   @Roles(BACKOFFICE_ROLES.SUPER_ADMIN)
   @UseGuards(AuthGuard(AUTH_GUARD.ACCESS_TOKEN_BACKOFFICE), RoleGuard)
   @Post('/admin')
+  @ApiBody({ schema: addAdmin })
   create(@Body() createBackofficeDto: CreateBackofficeDto) {
     return this.backofficeService.create(createBackofficeDto);
   }
@@ -83,7 +84,7 @@ export class BackofficeAuthController {
   }
 
   /**
-   * Logout a backoffice client by revoking their access token.
+   * Logout a backoffice user by revoking their access token.
    *
    * @param req - The HTTP request object containing user information.
    */
@@ -94,7 +95,7 @@ export class BackofficeAuthController {
   }
 
   /**
-   * Refresh the access token for a backoffice client.
+   * Refresh the access token for a backoffice user.
    *
    * @param req - The HTTP request object containing user information.
    * @returns An object containing the new access token.
@@ -105,3 +106,5 @@ export class BackofficeAuthController {
     return await this.backofficeService.refresh(req.user);
   }
 }
+
+// TODO giving super-admin the privilege of creating another admin with password obligates making an endpoint to reset password for admins
