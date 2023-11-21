@@ -8,7 +8,7 @@ import {
   Req,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiBody, ApiResponse } from '@nestjs/swagger';
 
 // Service
 import { ClientAuthService } from './client.auth.service';
@@ -42,6 +42,7 @@ export class ClientAuthController {
   @Version('1')
   @Post('/login')
   @ApiBody({ schema: loginSchema })
+  @ApiResponse({ status: 200, description: 'Login successful' })
   async login(@Body() loginDto: LoginDto): Promise<LoginRes<Client>> {
     return await this.clientService.login(loginDto);
   }
