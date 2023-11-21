@@ -49,6 +49,11 @@ export class MovieController {
     return this.movieService.createMultiple(moviesSeeds);
   }
 
+  @Post('/map')
+  async mapDoc() {
+    this.movieService.mapDoc(moviesSeeds);
+  }
+
   @Get()
   findAll(
     @Query() queryParams: QueryParamsDto,

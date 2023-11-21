@@ -9,12 +9,15 @@ import {
 import { FindAllReturn } from '../../common/types';
 import { Movie } from '../../backoffice/movie/schemas/movie.schema';
 import { HttpService } from '@nestjs/axios';
+import { ElasticsearchService } from 'src/search/search.service';
+import { UpdateSearchMovieDto } from '../dto';
 
 @Injectable()
 export class MovieService {
   constructor(
     private readonly backofficeMovieService: BackofficeMovieService,
     private readonly httpService: HttpService,
+    readonly elasticsearchService: ElasticsearchService,
   ) {}
 
   /**
@@ -71,5 +74,15 @@ export class MovieService {
     } = await this.httpService.axiosRef.get(url, options);
     const items = results.filter((el) => el.type === 'Trailer');
     return items;
+  }
+
+  async search(createClientDto: UpdateSearchMovieDto) {
+    const ids = (
+      (await this.elasticsearchService.searchMovie(
+        createClientDto.title,
+        createClientDto.overview,
+      )) as any
+    ).map((el) => parseInt(el._id));
+    return this.backofficeMovieService.findMany(ids);
   }
 }

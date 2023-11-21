@@ -52,3 +52,4 @@ export class ExtendedMovie extends Movie {
 }
 
 export const MovieSchema = SchemaFactory.createForClass(Movie);
+MovieSchema.index({ title: 1 }, { unique: true });
