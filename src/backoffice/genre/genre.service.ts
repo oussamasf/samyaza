@@ -43,6 +43,11 @@ export class GenreService {
     return await this.genreRepository.create(createGenreDto);
   }
 
+  /**
+   * Creates multiple genres in the database.
+   * @param createGenreDto Array of objects containing genre details to be created.
+   * @returns Promise resolving to an array of created genres.
+   */
   async createMultiple(createGenreDto: CreateGenreDto[]): Promise<Genre[]> {
     return await this.genreRepository.createMultiple(createGenreDto);
   }

@@ -45,8 +45,36 @@ export class MovieService {
     return await this.movieRepository.create(createMovieDto);
   }
 
+  /**
+   * Creates multiple movies at once.
+   * @param createMovieDto Array of movie details to be created.
+   * @returns Promise that resolves to an array of created movies.
+   */
   async createMultiple(createMovieDto: CreateMovieDto[]): Promise<Movie[]> {
     return await this.movieRepository.createMultiple(createMovieDto);
+  }
+
+  /**
+   * Creates or updates an index in Elasticsearch.
+   * @param index The name of the index to create or update.
+   * @returns Promise that resolves after creating or updating the index in Elasticsearch.
+   */
+  async createIndex(index: string) {
+    return await this.elasticsearchService.createOrUpdateIndex(index);
+  }
+
+  /**
+   * Maps an array of documents to Elasticsearch.
+   * @param docs An array of documents to be mapped to Elasticsearch.
+   * @returns Promise<void>
+   */
+  async mapDoc(docs: any[]) {
+    docs.forEach(async (element) => {
+      return await this.elasticsearchService.createdDoc(
+        element.idNumber,
+        element,
+      );
+    });
   }
 
   /**
@@ -69,6 +97,11 @@ export class MovieService {
     return await this.movieRepository.find(findQuery);
   }
 
+  /**
+   * Finds multiple movies based on an array of movie IDs.
+   * @param id Array of movie IDs to search for.
+   * @returns Promise that resolves to an array of movies found by their IDs.
+   */
   async findMany(id: number[]): Promise<Movie[]> {
     const findQuery = { idNumber: { $in: id } };
     return await this.movieRepository.findMany(findQuery);
@@ -122,6 +155,15 @@ export class MovieService {
   }
 
   /**
+   * Retrieves top 5 rated movies
+   * @returns {Promise<Movie | null>} A Promise that resolves to the found movie information entry,
+   * or undefined if no movie with the specified name exists.
+   */
+  async getTopRated(): Promise<Movie[]> {
+    return await this.movieRepository.getTopRated();
+  }
+
+  /**
    * Updates an movie information entry with the specified changes based on its unique id (idNumber).
    *
    * @param {string} id - The unique id of the movie information entry to update.
@@ -134,34 +176,5 @@ export class MovieService {
       () => this.movieRepository.updateById(id, updateMovieDto),
       movieErrorMessages.MOVIE_TITLE_ALREADY_EXISTS,
     );
-  }
-
-  /**
-   * Retrieves top 5 rated movies
-   * @returns {Promise<Movie | null>} A Promise that resolves to the found movie information entry,
-   * or undefined if no movie with the specified name exists.
-   */
-  async getTopRated(): Promise<Movie[]> {
-    return await this.movieRepository.getTopRated();
-  }
-
-  /**
-   * Retrieves top 5 rated movies
-   * @returns {Promise<Movie | null>} A Promise that resolves to the found movie information entry,
-   * or undefined if no movie with the specified name exists.
-   */
-  async createIndex(index: string) {
-    return await this.elasticsearchService.createOrUpdateIndex(index);
-    // return await this.elasticsearchService.createOrUpdateIndex(index:);
-  }
-
-  async mapDoc(docs: any[]) {
-    docs.forEach(async (element) => {
-      return await this.elasticsearchService.createdDoc(
-        element.idNumber,
-        element,
-      );
-    });
-    // return await this.elasticsearchService.createOrUpdateIndex(index:);
   }
 }
