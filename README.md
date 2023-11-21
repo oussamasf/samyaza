@@ -25,7 +25,7 @@ Follow these steps to set up and run flix-flex locally:
    ```bash
    git clone https://github.com/oussamasf/flix-flex
    ```
-2. **Duplicate `.env.example` and name it `.env`
+2. **Duplicate** `.env.example` and name it `.env`
 3. **Start Docker Containers:**
 Run Docker Compose:
    ```bash
