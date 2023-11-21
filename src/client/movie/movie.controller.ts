@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { MovieService } from './movie.service';
 import { IdParamsDto, QueryParamsDto } from '../../common/dto';
 import {
@@ -11,6 +19,7 @@ import {
 } from '../../common/decorators/query.param.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import AUTH_GUARD from '../../common/constants/authGuards';
+import { UpdateSearchMovieDto } from '../dto';
 
 /**
  * Controller responsible for handling HTTP requests related to movies.
@@ -42,6 +51,11 @@ export class MovieController {
     return this.movieService.findAll(queryParams, search, sort);
   }
 
+  @Post('search')
+  async advancedSearch(@Body() createMovieDto: UpdateSearchMovieDto) {
+    return await this.movieService.search(createMovieDto);
+  }
+
   @Get('top-rated')
   async getTop() {
     return await this.movieService.getTopRated();
@@ -64,4 +78,8 @@ export class MovieController {
    * @param id - The unique identifier of the movie to be retrieved.
    * @returns The movie object if found.
    */
+  @Get(':id/trailer')
+  async findTrailer(@Param() { id }: IdParamsDto) {
+    return await this.movieService.getTrailer(id);
+  }
 }

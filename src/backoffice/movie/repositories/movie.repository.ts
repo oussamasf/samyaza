@@ -17,6 +17,10 @@ export class MovieRepository {
     return this.EntityModel.findOne(userFilterQuery);
   }
 
+  async findMany(userFilterQuery: FilterQuery<Movie>): Promise<Movie[]> {
+    return this.EntityModel.find(userFilterQuery);
+  }
+
   async find(usersFilterQuery: FindAllDto): Promise<FindAllReturn<Movie>> {
     usersFilterQuery.sort ? usersFilterQuery.sort : { _id: 1 };
     const [results, count] = await Promise.all([

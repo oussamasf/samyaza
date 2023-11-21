@@ -17,12 +17,14 @@ import {
 // Constants & Types
 import { movie as movieErrorMessages } from '../../common/constants/errorMessages';
 import { FindAllReturn } from 'src/common/types';
+import { ElasticsearchService } from 'src/search/search.service';
 
 @Injectable()
 export class MovieService {
   constructor(
     readonly movieRepository: MovieRepository,
     readonly commonService: CommonService,
+    readonly elasticsearchService: ElasticsearchService,
   ) {}
 
   /**
@@ -65,6 +67,11 @@ export class MovieService {
     const findQuery = { limit, skip, search, sort };
 
     return await this.movieRepository.find(findQuery);
+  }
+
+  async findMany(id: number[]): Promise<Movie[]> {
+    const findQuery = { idNumber: { $in: id } };
+    return await this.movieRepository.findMany(findQuery);
   }
 
   /**
@@ -136,5 +143,25 @@ export class MovieService {
    */
   async getTopRated(): Promise<Movie[]> {
     return await this.movieRepository.getTopRated();
+  }
+
+  /**
+   * Retrieves top 5 rated movies
+   * @returns {Promise<Movie | null>} A Promise that resolves to the found movie information entry,
+   * or undefined if no movie with the specified name exists.
+   */
+  async createIndex(index: string) {
+    return await this.elasticsearchService.createOrUpdateIndex(index);
+    // return await this.elasticsearchService.createOrUpdateIndex(index:);
+  }
+
+  async mapDoc(docs: any[]) {
+    docs.forEach(async (element) => {
+      return await this.elasticsearchService.createdDoc(
+        element.idNumber,
+        element,
+      );
+    });
+    // return await this.elasticsearchService.createOrUpdateIndex(index:);
   }
 }

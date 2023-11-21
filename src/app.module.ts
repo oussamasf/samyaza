@@ -16,6 +16,7 @@ import { HttpLoggingMiddleware } from './middlewares/http-logging.middleware';
 import { CommonModule } from './common/common.module';
 import { CommonService } from './common/common.service';
 import { ClientModule } from './client/client.module';
+import { EsSearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ClientModule } from './client/client.module';
 
     CommonModule,
     EventEmitterModule.forRoot({ verboseMemoryLeak: true }),
+    EsSearchModule,
   ],
   controllers: [AppController],
   providers: [
