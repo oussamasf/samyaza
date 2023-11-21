@@ -52,6 +52,11 @@ export class SeriesService {
     return await this.backofficeSeriesService.getTopRated();
   }
 
+  /**
+   * Get the trailer for a specific series.
+   * @param _id - The ID of the movie for which the trailer is requested.
+   * @returns {Promise<Record<any, any>>} A Promise that resolves to the trailer information.
+   */
   async getTrailer(_id: string): Promise<Record<any, any>> {
     const series = (await this.backofficeSeriesService.findOneWithException(
       _id,

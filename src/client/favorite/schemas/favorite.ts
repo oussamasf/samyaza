@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
+import { onModelEnum } from '../constants';
 
 export type FavoriteDocument = HydratedDocument<Favorite>;
 
@@ -20,7 +21,7 @@ export class Favorite {
   })
   favoriteItem: Types.ObjectId;
 
-  @Prop({ type: String, enum: ['Movie', 'Series'], required: true })
+  @Prop({ type: String, enum: onModelEnum, required: true })
   onModel: string;
 }
 
