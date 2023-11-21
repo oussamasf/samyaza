@@ -55,6 +55,11 @@ export class MovieService {
     return await this.backofficeMovieService.getTopRated();
   }
 
+  /**
+   * Get the trailer for a specific movie.
+   * @param _id - The ID of the movie for which the trailer is requested.
+   * @returns {Promise<Record<any, any>>} A Promise that resolves to the trailer information.
+   */
   async getTrailer(_id: string): Promise<Record<any, any>> {
     const movie = (await this.backofficeMovieService.findOneWithException(
       _id,
@@ -76,6 +81,11 @@ export class MovieService {
     return items;
   }
 
+  /**
+   * Search for movies based on the specified criteria.
+   * @param createClientDto - The criteria to search movies.
+   * @returns A Promise that resolves to the list of movies matching the search criteria.
+   */
   async search(createClientDto: UpdateSearchMovieDto) {
     const ids = (
       (await this.elasticsearchService.searchMovie(
