@@ -15,7 +15,7 @@ import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @Controller('client')
 @UseGuards(AuthGuard(AUTH_GUARD.ACCESS_TOKEN_CLIENT))
-@ApiTags('client/favorite')
+@ApiTags('Client/favorite')
 export class FavoriteController {
   constructor(private readonly favoriteService: FavoriteService) {}
 
