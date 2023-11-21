@@ -43,6 +43,11 @@ export class SeriesService {
     return await this.seriesRepository.create(createSeriesDto);
   }
 
+  /**
+   * Create multiple series in the repository.
+   * @param createSeriesDto An array of series data to create.
+   * @returns An array of created series.
+   */
   async createMultiple(createSeriesDto: CreateSeriesDto[]): Promise<Series[]> {
     return await this.seriesRepository.createMultiple(createSeriesDto);
   }
@@ -115,6 +120,15 @@ export class SeriesService {
   }
 
   /**
+   * Retrieves top 5 rated movies
+   * @returns {Promise<Movie | null>} A Promise that resolves to the found movie information entry,
+   * or undefined if no movie with the specified name exists.
+   */
+  async getTopRated(): Promise<Series[]> {
+    return await this.seriesRepository.getTopRated();
+  }
+
+  /**
    * Updates an series information entry with the specified changes based on its unique id (idNumber).
    *
    * @param {string} idNumber - The unique id of the series information entry to update.
@@ -127,14 +141,5 @@ export class SeriesService {
       () => this.seriesRepository.updateById(id, updateSeriesDto),
       seriesErrorMessages.SERIES_NAME_ALREADY_EXISTS,
     );
-  }
-
-  /**
-   * Retrieves top 5 rated movies
-   * @returns {Promise<Movie | null>} A Promise that resolves to the found movie information entry,
-   * or undefined if no movie with the specified name exists.
-   */
-  async getTopRated(): Promise<Series[]> {
-    return await this.seriesRepository.getTopRated();
   }
 }

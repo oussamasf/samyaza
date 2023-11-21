@@ -32,7 +32,7 @@ import { QueryParamsDto } from '../../common/dto';
 import AUTH_GUARD from '../../common/constants/authGuards';
 import { moviesSeeds } from './seeds';
 import { ApiBody, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { updateGenreRequestBody } from './constants/swagger';
+import { updateMovieRequestBody } from './constants/swagger';
 
 /**
  * Controller handling movie-related HTTP requests.
@@ -108,7 +108,7 @@ export class MovieController {
    * @param updateMovieDto Updated movie details.
    */
   @Patch(':id')
-  @ApiBody({ schema: updateGenreRequestBody })
+  @ApiBody({ schema: updateMovieRequestBody })
   update(
     @Param('id') idNumber: string,
     @Body() updateMovieDto: UpdateMovieDto,

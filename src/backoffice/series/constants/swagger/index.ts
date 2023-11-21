@@ -1,14 +1,6 @@
-export const updateMovieRequestBody = {
+export const updateSeriesRequestBody = {
   type: 'object',
   properties: {
-    idNumber: {
-      type: 'number',
-      example: 1,
-    },
-    title: {
-      type: 'string',
-      example: 'The Movie Title',
-    },
     adult: {
       type: 'boolean',
       example: true,
@@ -20,37 +12,48 @@ export const updateMovieRequestBody = {
         example: [1, 2, 3],
       },
     },
+    idNumber: {
+      type: 'number',
+      example: 1,
+    },
+    originCountry: {
+      type: 'array',
+      items: {
+        type: 'string',
+        example: ['US', 'UK'],
+      },
+    },
     originalLanguage: {
       type: 'string',
       example: 'en',
     },
-    originalTitle: {
+    originalName: {
       type: 'string',
-      example: 'Original Title',
+      example: 'Original Name',
     },
     overview: {
       type: 'string',
-      example: 'This is a movie overview.',
+      example: 'This is a series overview.',
     },
     popularity: {
       type: 'number',
-      example: 7.5,
+      example: 8.5,
     },
-    releaseDate: {
+    firstAirDate: {
       type: 'string',
       example: '2023-11-21',
     },
-    video: {
-      type: 'boolean',
-      example: true,
+    name: {
+      type: 'string',
+      example: 'Series Name',
     },
     voteAverage: {
       type: 'number',
-      example: 8.2,
+      example: 9.0,
     },
     voteCount: {
       type: 'number',
-      example: 1000,
+      example: 1500,
     },
   },
   required: [],
