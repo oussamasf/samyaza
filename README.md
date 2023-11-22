@@ -31,7 +31,9 @@ Follow these steps to set up and run flix-flex locally:
 Run Docker Compose:
    ```bash
     docker compose -f "docker-compose.yaml" up -d --build 
-   ```
+   ``` 
+then start application ```pnpm i && pnpm run start:dev```
+
 4. **Add Super Admin to MongoDB**:
 Manually add a super admin to the MongoDB instance.
 inject this under admins collection:
