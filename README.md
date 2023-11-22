@@ -23,16 +23,37 @@ Follow these steps to set up and run flix-flex locally:
 1. **Clone Repository:**
 
    ```bash
-   git clone https://github.com/oussamasf/flix-flex
+   git clone https://github.com/oussamasf/flix-flex.git
+   cd flix-flex
    ```
-2. **Duplicate** `.env.example` and name it `.env`
+2. **Duplicate** `.env.example` twice and name it: `.env.development` `.env`
 3. **Start Docker Containers:**
 Run Docker Compose:
    ```bash
-    docker-compose up -d
+    docker compose -f "docker-compose.yaml" up -d --build 
+   ``` 
+then start application ```pnpm i && pnpm run start:dev```
+
 4. **Add Super Admin to MongoDB**:
 Manually add a super admin to the MongoDB instance.
-5. **Seed Database and Create Index**:
+inject this under admins collection:
+```bash
+{
+  "username": "ousf",
+  "password": "$2b$10$KVAMN18gLNr/4sk01LcC/O..0ycOYGaIqw.diV0kzjfRnrYA.9u9O",
+  "email": "ousf@gmail.com",
+  "roles": [
+    "admin",
+    "super"
+  ],
+}
+```
+now you can login into ```/api/v1/backoffice/account/login``` by the this credentials 
+```
+    "email": "ousf@gmail.com",
+    "password": "gg@&123456"
+```
+6. **Seed Database and Create Index**:
 
 ## Usage
 The usage of the flix-flex API is documented in detail through Postman and Swagger.
