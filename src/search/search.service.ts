@@ -74,7 +74,7 @@ export class ElasticsearchService {
       return res;
     } catch (error) {
       // Handle error
-      throw new Error(error);
+      console.error(error);
     }
   }
 }
