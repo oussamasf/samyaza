@@ -48,6 +48,11 @@ inject this under admins collection:
   ],
 }
 ```
+now you can login into ```/api/v1/backoffice/account/login``` by the this credentials 
+```
+    "email": "ousf@gmail.com",
+    "password": "gg@&123456"
+```
 6. **Seed Database and Create Index**:
 
 ## Usage
