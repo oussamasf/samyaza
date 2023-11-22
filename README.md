@@ -60,7 +60,7 @@ you can find all this endpoints documented on swagger or postman
 ## Usage
 The usage of the flix-flex API is documented in detail through Postman and Swagger.
 
-- swagger :```http:host/api/```
+- swagger :```http://host:port/api```
 - [postman](https://www.postman.com/red-flare-724255/workspace/flixflex)
 
 ## Configuration
