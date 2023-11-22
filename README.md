@@ -54,9 +54,14 @@ now you can login into ```/api/v1/backoffice/account/login``` by the this creden
     "password": "gg@&123456"
 ```
 6. **Seed Database and Create Index**:
+   using backoffice first send request to ```api/backoffice/{{movie/series/genre}}/seed``` then map movies data if you want to use advanced search ```api/backoffice/movie/map```
+you can find all this endpoints documented on swagger or postman 
 
 ## Usage
 The usage of the flix-flex API is documented in detail through Postman and Swagger.
+
+- swagger :```http://host:port/api```
+- [postman](https://www.postman.com/red-flare-724255/workspace/flixflex)
 
 ## Configuration
 For configuration settings, refer to the provided `.env.example` file.
