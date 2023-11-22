@@ -19,7 +19,6 @@ Follow these steps to set up and run flix-flex locally:
 1- Clone Repository:
 
 ```bash
-Copy code
 git clone https://github.com/oussamasf/flix-flex.git
 cd flix-flex
 ```
