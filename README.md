@@ -54,7 +54,11 @@ now you can login into ```/api/v1/backoffice/account/login``` by the this creden
     "password": "gg@&123456"
 ```
 6. **Seed Database and Create Index**:
-   using backoffice first send request to ```api/backoffice/{{movie/series/genre}}/seed``` then map movies data if you want to use advanced search ```api/backoffice/movie/map```
+   using backoffice first send request to ```api/backoffice/{{movie/series/genre}}/seed``` 
+
+   then map movies data if you want to use advanced search ```api/backoffice/movie/map```
+
+   then feel free to explore all endpoints 
 you can find all this endpoints documented on swagger or postman 
 
 ## Usage
