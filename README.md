@@ -34,7 +34,19 @@ Run Docker Compose:
    ```
 4. **Add Super Admin to MongoDB**:
 Manually add a super admin to the MongoDB instance.
-5. **Seed Database and Create Index**:
+inject this under admins collection:
+```bash
+{
+  "username": "ousf",
+  "password": "$2b$10$KVAMN18gLNr/4sk01LcC/O..0ycOYGaIqw.diV0kzjfRnrYA.9u9O",
+  "email": "ousf@gmail.com",
+  "roles": [
+    "admin",
+    "super"
+  ],
+}
+```
+6. **Seed Database and Create Index**:
 
 ## Usage
 The usage of the flix-flex API is documented in detail through Postman and Swagger.
