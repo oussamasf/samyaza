@@ -14,16 +14,8 @@ export const genresSeeds: CreateGenreDto[] = [
     name: 'Drama',
   },
   {
-    idNumber: 10751,
-    name: 'Family',
-  },
-  {
     idNumber: 10762,
     name: 'KidNumbers',
-  },
-  {
-    idNumber: 9648,
-    name: 'Mystery',
   },
   {
     idNumber: 10763,
@@ -48,10 +40,6 @@ export const genresSeeds: CreateGenreDto[] = [
   {
     idNumber: 10768,
     name: 'War & Politics',
-  },
-  {
-    idNumber: 37,
-    name: 'Western',
   },
   {
     idNumber: 28,
