@@ -3,7 +3,7 @@ version: '3.5'
 services:
   #########################
   mongo:
-    container_name: flixDB
+    container_name: yazaDB
     image: mongo:6
     restart: always
     hostname: ${MONGO_HOST_NAME}
@@ -19,7 +19,7 @@ services:
       - uzza-network
   ######################### only in prod: comment when dev
   app:
-    container_name: flix-flex-api
+    container_name: Samyaza-api
     build:
       context: .
       dockerfile: ./dockerfile
@@ -37,7 +37,7 @@ services:
       - uzza-network
   #########################
   elasticsearch:
-    container_name: flixElasticsearch
+    container_name: yazElasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
     hostname: ${ES_HOST_NAME}
     environment:
