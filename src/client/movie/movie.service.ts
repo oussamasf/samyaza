@@ -88,7 +88,7 @@ export class MovieService {
    */
   async search(createClientDto: UpdateSearchMovieDto) {
     const ids = (
-      (await this.elasticsearchService.searchMovie(
+      (await this.backofficeMovieService.searchMovie(
         createClientDto.title,
         createClientDto.overview,
       )) as any
