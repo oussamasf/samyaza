@@ -81,7 +81,7 @@ The usage of the flix-flex API is thoroughly documented in Postman and Swagger.
 
 Swagger: http://host:port/api
 
-[Postman Workspace](https://www.postman.com/red-flare-724255/workspace/flixflex/overview)
+[Postman Workspace](https://www.postman.com/red-flare-724255/workspace/samyaza)
 
 ## Configuration
 

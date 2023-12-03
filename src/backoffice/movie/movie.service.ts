@@ -1,4 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 
 // Services & repos
 import { MovieRepository } from './repositories/movie.repository';
@@ -21,6 +26,8 @@ import { ElasticsearchService } from 'src/search/search.service';
 
 @Injectable()
 export class MovieService {
+  readonly INDEX = 'movies' as const;
+
   constructor(
     readonly movieRepository: MovieRepository,
     readonly commonService: CommonService,
@@ -35,12 +42,23 @@ export class MovieService {
    * @returns {Promise<MovieInformation>} A Promise that resolves to the created movie information.
    */
   async create(createMovieDto: CreateMovieDto): Promise<Movie> {
-    const { title } = createMovieDto;
+    const { title, idNumber, overview } = createMovieDto;
 
-    await this.commonService.findWithConflictException(
-      () => this.findMovieByTitle(title),
-      movieErrorMessages.MOVIE_TITLE_ALREADY_EXISTS,
-    );
+    await Promise.all([
+      await this.commonService.findWithConflictException(
+        () => this.findMovieByTitle(title),
+        movieErrorMessages.MOVIE_TITLE_ALREADY_EXISTS,
+      ),
+      await this.commonService.findWithConflictException(
+        () => this.movieRepository.findOne({ idNumber }),
+        movieErrorMessages.MOVIE_ID_NUMBER_ALREADY_EXISTS,
+      ),
+    ]);
+
+    await this.elasticsearchService.createdDoc(`${idNumber}`, this.INDEX, {
+      title,
+      overview,
+    });
 
     return await this.movieRepository.create(createMovieDto);
   }
@@ -65,8 +83,8 @@ export class MovieService {
    * @param index The name of the index to create or update.
    * @returns Promise that resolves after creating or updating the index in Elasticsearch.
    */
-  async createIndex(index: string) {
-    return await this.elasticsearchService.createOrUpdateIndex(index);
+  async createIndex() {
+    return await this.elasticsearchService.createOrUpdateIndex(this.INDEX);
   }
 
   /**
@@ -74,13 +92,36 @@ export class MovieService {
    * @param docs An array of documents to be mapped to Elasticsearch.
    * @returns Promise<void>
    */
-  async mapDoc(docs: any[]) {
+  async mapDoc(docs: CreateMovieDto[]) {
+    const mappingArray = [];
     docs.forEach(async (element) => {
-      return await this.elasticsearchService.createdDoc(
-        element.idNumber,
-        element,
+      mappingArray.push(
+        this.elasticsearchService.createdDoc(
+          `${element.idNumber}`,
+          this.INDEX,
+          element,
+        ),
       );
     });
+    try {
+      await Promise.all(mappingArray);
+    } catch (error) {
+      if (error.message === 'version_conflict_engine_exception')
+        throw new ConflictException('already mapped');
+    }
+  }
+
+  /**
+   * Maps an array of documents to Elasticsearch.
+   * @param docs An array of documents to be mapped to Elasticsearch.
+   * @returns Promise<void>
+   */
+  async deleteMoviesFromEs() {
+    try {
+      await this.elasticsearchService.deleteAllDocuments(this.INDEX);
+    } catch (error) {
+      throw new InternalServerErrorException('something went wrong');
+    }
   }
 
   /**
@@ -182,5 +223,61 @@ export class MovieService {
       () => this.movieRepository.updateById(id, updateMovieDto),
       movieErrorMessages.MOVIE_TITLE_ALREADY_EXISTS,
     );
+  }
+
+  /**
+   * Search for movies based on title and/or overview using Elasticsearch.
+   *
+   * This asynchronous function searches for movies based on the provided title and overview using Elasticsearch. It constructs a query that searches for movies where either the title matches with fuzziness or the overview has at least 50% of 2 words in common with the provided overview. It then performs the search operation in Elasticsearch and returns the search results as an array of records.
+   *
+   * @param {string} title - The title of the movie to search for (optional).
+   * @param {string} overview - The overview or description of the movie to search for (optional).
+   *
+   * @throws {NotFoundException} Throws a NotFoundException if an error occurs during the search operation in Elasticsearch.
+   *
+   * @returns {Promise<Record<any, any>[]>} A Promise that resolves to an array of records representing the search results based on the provided title and/or overview.
+   */
+  async searchMovie(
+    title: string = '',
+    overview: string = '',
+  ): Promise<Record<any, any>[]> {
+    const body = {
+      query: {
+        bool: {
+          should: [
+            {
+              match: {
+                title: {
+                  query: title,
+                  fuzziness: 'AUTO',
+                },
+              },
+            },
+            {
+              match: {
+                overview: {
+                  query: overview,
+                  minimum_should_match: '2<50%',
+                },
+              },
+            },
+            {
+              fuzzy: {
+                title: {
+                  value: title,
+                  fuzziness: 'AUTO',
+                },
+              },
+            },
+          ],
+        },
+      },
+    };
+    try {
+      return await this.elasticsearchService.search(this.INDEX, body);
+    } catch (error) {
+      // Handle error
+      throw new NotFoundException(error);
+    }
   }
 }

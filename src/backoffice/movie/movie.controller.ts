@@ -7,6 +7,7 @@ import {
   Param,
   UseGuards,
   Query,
+  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -68,7 +69,23 @@ export class MovieController {
   // TODO make it dynamic mapping later
   @Post('/map')
   async mapDoc() {
-    this.movieService.mapDoc(moviesSeeds);
+    return this.movieService.mapDoc(moviesSeeds);
+  }
+
+  /**
+   * Create index movie into elasticSearch.
+   */
+  @Post('/es-index')
+  async index() {
+    return this.movieService.createIndex();
+  }
+
+  /**
+   * Delete index movie into elasticSearch.
+   */
+  @Delete('/es-docs')
+  async deleteEsDoc() {
+    return this.movieService.deleteMoviesFromEs();
   }
 
   /**
