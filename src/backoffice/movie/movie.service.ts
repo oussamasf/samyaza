@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 
 // Services & repos
 import { MovieRepository } from './repositories/movie.repository';
@@ -51,7 +51,13 @@ export class MovieService {
    * @returns Promise that resolves to an array of created movies.
    */
   async createMultiple(createMovieDto: CreateMovieDto[]): Promise<Movie[]> {
-    return await this.movieRepository.createMultiple(createMovieDto);
+    let results;
+    try {
+      results = await this.movieRepository.createMultiple(createMovieDto);
+    } catch (error) {
+      throw new ConflictException('already seeded');
+    }
+    return results;
   }
 
   /**

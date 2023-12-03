@@ -16,7 +16,7 @@ export class Series {
   @Prop([Number])
   genreIds: number[];
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   idNumber: number;
 
   @Prop([String])

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 
 // Services & repos
 import { SeriesRepository } from './repositories/series.repository';
@@ -49,7 +49,13 @@ export class SeriesService {
    * @returns An array of created series.
    */
   async createMultiple(createSeriesDto: CreateSeriesDto[]): Promise<Series[]> {
-    return await this.seriesRepository.createMultiple(createSeriesDto);
+    let results;
+    try {
+      results = await this.seriesRepository.createMultiple(createSeriesDto);
+    } catch (error) {
+      throw new ConflictException('already seeded');
+    }
+    return results;
   }
 
   /**

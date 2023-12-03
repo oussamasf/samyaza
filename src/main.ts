@@ -36,8 +36,8 @@ async function bootstrap() {
 
   // Configure API documentation using Swagger
   const config = new DocumentBuilder()
-    .setTitle('FlixFlex API') // Set the API title
-    .setDescription('Movie App FlixFlex') // Set the API description
+    .setTitle('Samyaza API') // Set the API title
+    .setDescription('Movie App Samyaza') // Set the API description
     .setVersion('1.0') // Set the API version
     .addTag('movies api platform') // Add a tag to categorize API endpoints
     .build();
