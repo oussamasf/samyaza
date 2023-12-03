@@ -47,8 +47,6 @@ services:
       memlock:
         soft: -1
         hard: -1
-    ports:
-      - ${ELASTICSEARCH_PORT}:9200
     networks:
       - uzza-network
     volumes:
