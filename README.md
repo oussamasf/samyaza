@@ -77,7 +77,7 @@ Feel free to explore all endpoints, which are documented on Swagger or Postman.
 
 ## Usage
 
-The usage of the flix-flex API is thoroughly documented in Postman and Swagger.
+The usage of the Samyaza API is thoroughly documented in Postman and Swagger.
 
 Swagger: http://host:port/api
 
