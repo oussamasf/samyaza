@@ -20,10 +20,10 @@ import { EsSearchModule } from './search/search.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(configOptions),
     BackofficeModule,
     ClientModule,
 
-    ConfigModule.forRoot(configOptions),
     MongooseModule.forRoot(process.env.MONGO_URL),
 
     //? rate limiter
