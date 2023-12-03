@@ -1,4 +1,4 @@
-name: 'FlixFlex API - Rest API for movies'
+name: 'Samyaza API - Rest API for movies'
 
 on:
   push:
