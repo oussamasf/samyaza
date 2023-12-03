@@ -1,5 +1,5 @@
-# Flix-flex - NestJS API for Managing Movies and Series
-## flix-flex is a NestJS-based API project designed to manage movies and series similar to TMDB (The Movie Database). It allows users to handle favorite movies and TV series, conduct searches within movies, and access trailers.
+# Samyaza - NestJS API for Managing Movies and Series
+Samyaza is a NestJS-based API project designed to manage movies and series similar to TMDB (The Movie Database). It allows users to handle favorite movies and TV series, conduct searches within movies, and access trailers.
 
 ## Features
 - Favorite Management: Users can manage their favorite movies and series.
