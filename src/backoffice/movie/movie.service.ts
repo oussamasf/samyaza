@@ -42,12 +42,18 @@ export class MovieService {
    * @returns {Promise<MovieInformation>} A Promise that resolves to the created movie information.
    */
   async create(createMovieDto: CreateMovieDto): Promise<Movie> {
-    const { title } = createMovieDto;
+    const { title, idNumber } = createMovieDto;
 
-    await this.commonService.findWithConflictException(
-      () => this.findMovieByTitle(title),
-      movieErrorMessages.MOVIE_TITLE_ALREADY_EXISTS,
-    );
+    await Promise.all([
+      await this.commonService.findWithConflictException(
+        () => this.findMovieByTitle(title),
+        movieErrorMessages.MOVIE_TITLE_ALREADY_EXISTS,
+      ),
+      await this.commonService.findWithConflictException(
+        () => this.findMany([idNumber]),
+        movieErrorMessages.MOVIE_ID_NUMBER_ALREADY_EXISTS,
+      ),
+    ]);
 
     return await this.movieRepository.create(createMovieDto);
   }
